@@ -1,18 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Image,Button } from 'react-native';
 import icon from './assets/icon.png';
+import 'react-native-gesture-handler';
+
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Login from './screens/Login';
+import Home from './screens/Home';
+
+
 
 export default function App() {
+
+  const Stack = createStackNavigator();
+  
+  function MyStack() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
+        <Stack.Screen name="Home"  options={{ headerShown: false }}  component={Home} />
+      </Stack.Navigator>
+    );
+  } 
+
+
   return (
-    <View style={styles.container}>
-      <Image
-        source={icon}
-        style={{ width: 100, height: 100 }}
-      />
-      <Text style={{color: 'white'}}>Hola!</Text>
-      <StatusBar style="light" />
-      <Button title="pulsa aqui" onPress={() => alert('Hola!')} />
-    </View>
+    <NavigationContainer> 
+      <MyStack />
+    </NavigationContainer>
   );
 }
 
