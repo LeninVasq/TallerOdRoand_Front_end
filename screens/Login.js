@@ -108,10 +108,10 @@ export default function Login() {
       await AsyncStorage.setItem('id', result.id_usuario.toString());
       await AsyncStorage.setItem('email', result.correo);
 
-      alert(result.id_tipo_usuario);
+      //alert(result.id_tipo_usuario);
       switch (result.id_tipo_usuario) {
         case 1:
-          navigation.navigate('Home');
+          navigation.navigate('Container');
           if (!isMobile) {
             Swal.fire({
               icon: 'success',
@@ -214,6 +214,9 @@ export default function Login() {
                 <Text style={styles.textoBoton}>Iniciar Sesion</Text>
               </TouchableOpacity>
             </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.linkText}>¿No tienes cuenta? Crea una</Text>
+      </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       ) : (
@@ -256,7 +259,13 @@ export default function Login() {
   <Text style={styles.textoBoton}>Iniciar Sesión</Text>
 </TouchableOpacity>
 
+
           </View>
+
+
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.linkText}>¿No tienes cuenta? Crea una</Text>
+      </TouchableOpacity>
         </View>
       )}
     </ImageBackground>
@@ -264,6 +273,12 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
+  linkText: {
+    color: 'white',
+    marginTop: 15,
+    textDecorationLine: 'none',
+    fontSize: 14,
+  },
   padre: {
     flex: 1,
     resizeMode: 'cover',
