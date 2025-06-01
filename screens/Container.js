@@ -19,7 +19,7 @@ const { width } = Dimensions.get('window');
 const SIDEBAR_WIDTH = width * 0.30;
 
 export default function Container() {
-  const [currentScreen, setCurrentScreen] = useState('dashboard');
+  const [currentScreen, setCurrentScreen] = useState('spare_parts_category');
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(-SIDEBAR_WIDTH)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
@@ -385,7 +385,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 8,
-    alignItems: 'center',
   },
   card: {
     alignItems: 'center',
