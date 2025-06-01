@@ -20,7 +20,6 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 const AddSparePartsCategory = ({ visible, onClose, onSave }) => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [foto, setFoto] = useState(null); // base64 sin prefijo
   const [image, setImage] = useState(null);
 const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 
@@ -43,8 +42,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 
   const handleGuardar = async () => {
 
-   console.log('Image URI:', image);
-   console.log(image === '');
+
     if (image === null) {
       if (!isMobile) {
                   Swal.fire({
@@ -114,11 +112,64 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
         }),
       });
 
-      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      if (!response.ok) throw new Error(`Error: ${response.error_message}`);
 
-      alert('Éxito', 'Categoría guardada correctamente');
-      onSave(); // Avisar al padre para refrescar o cerrar modal
+            const result = await response.json();
+
+      console.log('Categoría guardada:', result);
+      if(result.error_message === 'The spare parts category already exists'){
+        if (!isMobile) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Existe',
+                    text: 'La categoría ya existe',
+                    toast: true,  
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,  
+                    
+                  });
+      }
+      else{
+        <AwesomeAlert
+  show='true'
+  title="Existe"
+  message='La categoría ya existe'
+  closeOnTouchOutside={true}
+  showCancelButton={false}
+  showConfirmButton={true}
+  confirmText="Aceptar"
+  confirmButtonColor="#007AFF"
+  onConfirmPressed={() => setShowAlert(false)}
+/>}
+      }else{
+ if (!isMobile) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Exito',
+                    text: 'Categoría guardada correctamente',
+                    toast: true,  
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,  
+                    
+                  });
+      }
+      else{
+        <AwesomeAlert
+  show='true'
+  title="Exito"
+  message='Categoría guardada correctamente'
+  closeOnTouchOutside={true}
+  showCancelButton={false}
+  showConfirmButton={true}
+  confirmText="Aceptar"
+  confirmButtonColor="#007AFF"
+  onConfirmPressed={() => setShowAlert(false)}
+/>}      onSave(); // Avisar al padre para refrescar o cerrar modal
       resetForm();
+      }
+    
     } catch (error) {
       console.error('Error al guardar categoría:', error);
       Alert.alert('Error', 'No se pudo guardar la categoría');
@@ -128,7 +179,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
   const resetForm = () => {
     setNombre('');
     setDescripcion('');
-    setFoto(null);
+    setImage(null);
     onClose();
   };
 
@@ -160,7 +211,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
           style={{width: 80, height: 80, borderRadius: 10}}
         />
       ) : (
-        <Text style={{fontSize: 14, color: '#aaa'}}>Subir Imagen</Text>
+        <Text style={{fontSize: 14, color: '#aaa', padding:20}}>Subir Imagen</Text>
       )}
     </TouchableOpacity>
 

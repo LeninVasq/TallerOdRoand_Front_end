@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
-  Image
+  Image,ScrollView
 } from 'react-native';
 import { API_BASE_URL } from '../url';
 import AddSparePartsCategory from '../components/addspare_parts_category';
@@ -43,24 +43,41 @@ const Spare_parts_category = () => {
     Alert.alert('Actualizar', `Actualizar categoría: ${categoria.nombre}`);
   };
 
-  const handleVerRepuestos = (categoria) => {
-    Alert.alert('Ver repuestos', `Repuestos de la categoría: ${categoria.nombre}`);
+  const handleVerSubcategorias = async (categoria) =>  {
+      await AsyncStorage.setItem('idCategoriaRepuestos', categoria.id_categorias_repuestos.toString());
+
   };
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.nombre}</Text>
-      <Text style={styles.description}>{item.descripcion}</Text>
+<Text style={styles.description}>
+  {item.descripcion.length > 25
+    ? item.descripcion.substring(0, 25) + '...'
+    : item.descripcion}
+</Text>
 {item.foto ? (
   <Image
-    source="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAAAAAAD/4QAuRXhpZgAATU0AKgAAAAgAAkAAAAMAAAABAIIAAEABAAEAA"
+    source={{ uri: item.foto }}
+    style={{
+  width: 200,
+  height: 200,
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 10,
+  marginBottom: 10,  // corregido aquí
+  marginTop: 10,
+  alignSelf: 'center'  // esto centra el contenedor si está en un View padre de tipo column (por defecto)
+}}
+
+
   />
 ) : (
   <Text>No hay imagen</Text>
 )}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonPrimary} onPress={() => handleVerRepuestos(item)}>
-          <Text style={styles.buttonText}>Repuestos</Text>
+        <TouchableOpacity style={styles.buttonPrimary} onPress={() => handleVerSubcategorias(item)}>
+          <Text style={styles.buttonText}>Sub categoria</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonSecondary} onPress={() => handleActualizar(item)}>
           <Text style={styles.buttonTextSec}>Actualizar</Text>
@@ -87,10 +104,11 @@ const Spare_parts_category = () => {
         data={categoriasFiltradas}
         keyExtractor={(item) => item.id_categorias_repuestos.toString()}
         renderItem={renderItem}
-        numColumns={2}
+        numColumns={5}
         columnWrapperStyle={styles.row}
         ListEmptyComponent={<Text style={styles.emptyText}>No hay categorías disponibles.</Text>}
       />
+    
 
     <AddSparePartsCategory
         visible={modalVisible}
@@ -107,7 +125,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    w2idth: '100%',
+    width: '100%',
+    height: '100%',
     backgroundColor: '#f5f5f5',
   },
   searchInput: {
@@ -120,20 +139,24 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   row: {
-    justifyContent: 'space-between',
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 10,
-    marginBottom: 15,
-    flex: 1,
-    marginHorizontal: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between',
+}
+,
+card: {
+  borderRadius: 12,
+  padding: 10,
+  width: '30%', 
+  marginBottom: 15,
+  backgroundColor: '#fff',
+  marginHorizontal: 5,
+  shadowColor: '#000',
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 3,
+}
+,
   title: {
     fontSize: 16,
     fontWeight: '600',

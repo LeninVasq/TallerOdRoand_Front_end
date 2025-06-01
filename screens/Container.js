@@ -380,6 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 20,
+    flex: 1,
     elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.05,
