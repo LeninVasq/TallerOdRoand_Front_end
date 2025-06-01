@@ -12,7 +12,7 @@ import {
 import { API_BASE_URL } from '../url';
 import AddSparePartsCategory from '../components/addspare_parts_category';
 
-const Spare_parts_category = () => {
+const Spare_parts_category = ( { selectMenuItem }) => {
   const [categorias, setCategorias] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,10 +43,12 @@ const Spare_parts_category = () => {
     Alert.alert('Actualizar', `Actualizar categoría: ${categoria.nombre}`);
   };
 
-  const handleVerSubcategorias = async (categoria) =>  {
-      await AsyncStorage.setItem('idCategoriaRepuestos', categoria.id_categorias_repuestos.toString());
+const handleVerSubcategorias = (categoria) => {
+  localStorage.setItem('idCategoriaRepuestos', categoria.id_categorias_repuestos.toString());
+  selectMenuItem('sub_category');
+};
 
-  };
+
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>

@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Spare_parts_category from './spare_parts_category'; // Asegúrate de que la ruta sea correcta
 import Dashboard from './Dashboard';
+import sub_category from './sub_category';
 const { width } = Dimensions.get('window');
 const SIDEBAR_WIDTH = width * 0.30;
 
@@ -103,9 +104,6 @@ export default function Container() {
 
 
   const menuItems = [
-
-
-    
     //badge sirve para mostrar notificaciones o conteos
     //defino los elementos del menú para luego mostrarlos 
     { id: 'dashboard', title: 'Dashboard', icon: 'speedometer-outline', badge: null },
@@ -153,13 +151,15 @@ export default function Container() {
       inventory: { title: 'Inventario', subtitle: 'Control de stock y almacén' },
       customers: { title: 'Clientes', subtitle: 'Base de datos de clientes' },
       reports: { title: 'Reportes', subtitle: 'Análisis y estadísticas' },
+      sub_category: { title: 'Sub categorias', subtitle: 'Sub categorias de repuestos' },
       settings: { title: 'Configuración', subtitle: 'Ajustes del sistema' },
     };
 
     //para renderizar componentes específicos según la pantalla seleccionada
     const screenComponents = {
-      spare_parts_category: Spare_parts_category,
-      dashboard: Dashboard
+      spare_parts_category: (props) => <Spare_parts_category {...props} selectMenuItem={selectMenuItem} />,
+      dashboard: Dashboard,
+      sub_category: sub_category,
     };
 
     const current = screens[currentScreen];
