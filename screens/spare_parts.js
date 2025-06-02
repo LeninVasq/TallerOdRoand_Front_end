@@ -28,7 +28,7 @@ const Spare_parts = () => {
   const obtenerSubCategorias = async () => {
           const idSubCategoria = await AsyncStorage.getItem('idsub_categorias');
     try {
-      const response = await fetch(`${API_BASE_URL}/Spare_parts/${idSubCategoria}`);
+      const response = await fetch(`${API_BASE_URL}/Spare_parts_Category_Id/${idSubCategoria}`);
       const data = await response.json();
       setCategorias(data);
     } catch (error) {
@@ -71,6 +71,12 @@ const Spare_parts = () => {
           {item.descripcion}
         </Text>
       </View>
+      <View style={styles.descriptionCell}>
+        <Text style={styles.descriptionText} numberOfLines={3}>
+          {item.sctok}
+        </Text>
+      </View>
+
       <View style={styles.imageCell}>
         <Image source={{ uri: item.foto }} style={styles.image} />
       </View>
@@ -91,12 +97,7 @@ const Spare_parts = () => {
         >
           <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.updateButton]}
-          onPress={() => handleUpdate(item.id_categoria)}
-        >
-          <Text style={styles.buttonText}>Informacion</Text>
-        </TouchableOpacity>
+        
       </View>
     </View>
   );
@@ -121,6 +122,9 @@ const Spare_parts = () => {
         </View>
         <View style={styles.descriptionCell}>
           <Text style={styles.headerText}>Descripción</Text>
+        </View>
+        <View style={styles.descriptionCell}>
+          <Text style={styles.headerText}>Stock</Text>
         </View>
         <View style={styles.imageCell}>
           <Text style={styles.headerText}>Foto</Text>
