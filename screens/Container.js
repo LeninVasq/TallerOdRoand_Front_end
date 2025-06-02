@@ -10,20 +10,29 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Spare_parts_category from './spare_parts_category'; // Asegúrate de que la ruta sea correcta
 import Dashboard from './Dashboard';
-import sub_category from './sub_category';
+import Sub_category from './sub_category';
+import Spare_parts from './spare_parts';
 const { width } = Dimensions.get('window');
-const SIDEBAR_WIDTH = width * 0.30;
 
+let SIDEBAR_WIDTH ; 
+if (Platform.OS === 'android') {
+  SIDEBAR_WIDTH = 600;
+}else {
+  SIDEBAR_WIDTH = width * 0.3;
+}
 export default function Container() {
   const [currentScreen, setCurrentScreen] = useState('spare_parts_category');
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const slideAnim = useRef(new Animated.Value(-SIDEBAR_WIDTH)).current;
+const slideAnim = useRef(new Animated.Value(Platform.OS === 'android' ? -200 : -SIDEBAR_WIDTH)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
+
+
 
 
   const handleSubmit = async (e) => {
@@ -116,25 +125,25 @@ export default function Container() {
     { id: 'settings', title: 'Configuración', icon: 'settings-outline', badge: null },
   ];
 
-  const toggleSidebar = () => {
-    const toValue = sidebarVisible ? -SIDEBAR_WIDTH : 0;
-    const overlayValue = sidebarVisible ? 0 : 0.5;
+ const toggleSidebar = () => {
+  const toValue = sidebarVisible ? -SIDEBAR_WIDTH : 0;
+  const overlayValue = sidebarVisible ? 0 : 0.5;
 
-    Animated.parallel([
-      Animated.timing(slideAnim, {
-        toValue,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(overlayAnim, {
-        toValue: overlayValue,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start();
+  Animated.parallel([
+    Animated.timing(slideAnim, {
+      toValue,
+      duration: 300,
+      useNativeDriver: true,
+    }),
+    Animated.timing(overlayAnim, {
+      toValue: overlayValue,
+      duration: 300,
+      useNativeDriver: true,
+    }),
+  ]).start();
 
-    setSidebarVisible(!sidebarVisible);
-  };
+  setSidebarVisible(!sidebarVisible);
+};
 
   const selectMenuItem = (itemId) => {
     setCurrentScreen(itemId);
@@ -152,6 +161,8 @@ export default function Container() {
       customers: { title: 'Clientes', subtitle: 'Base de datos de clientes' },
       reports: { title: 'Reportes', subtitle: 'Análisis y estadísticas' },
       sub_category: { title: 'Sub categorias', subtitle: 'Sub categorias de repuestos' },
+      spare_parts: { title: 'Repuestos', subtitle: 'Control de repuestos y stock' },
+
       settings: { title: 'Configuración', subtitle: 'Ajustes del sistema' },
     };
 
@@ -159,7 +170,8 @@ export default function Container() {
     const screenComponents = {
       spare_parts_category: (props) => <Spare_parts_category {...props} selectMenuItem={selectMenuItem} />,
       dashboard: Dashboard,
-      sub_category: sub_category,
+      sub_category:  (props) => <Sub_category {...props} selectMenuItem={selectMenuItem} />,
+      spare_parts: Spare_parts,
     };
 
     const current = screens[currentScreen];
@@ -222,7 +234,8 @@ export default function Container() {
       )}
 
       {/* Sidebar */}
-      <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
+      <Animated.View style={[styles.sidebar, {width: Platform.OS === 'android' ? 200 : SIDEBAR_WIDTH,  
+        transform: [{ translateX: slideAnim }] }]}>
         {/* Header del Sidebar */}
         <View style={styles.sidebarHeader}>
           <View style={styles.userProfile}>
@@ -410,7 +423,6 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: SIDEBAR_WIDTH,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOpacity: 0.2,

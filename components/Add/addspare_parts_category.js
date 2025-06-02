@@ -11,20 +11,18 @@ import {
   Platform
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import { API_BASE_URL } from '../url';
+import { API_BASE_URL } from '../../url';
 import Swal from 'sweetalert2';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 
 
-const AddSub_Category = ({ visible, onClose, onSave }) => {
+const AddSparePartsCategory = ({ visible, onClose, onSave }) => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [image, setImage] = useState(null);
 const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 
-  const idCategoria = localStorage.getItem('idCategoriaRepuestos');
- 
   const handleFileChange = () => {
     const options = {
       mediaType: 'photo',
@@ -104,14 +102,13 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
     try {
       
         
-      const response = await fetch(`${API_BASE_URL}/Sub_category`, {
+      const response = await fetch(`${API_BASE_URL}/Spare_Parts_Category`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body:  JSON.stringify({
           name: nombre,
           description: descripcion,
           photo: image ,
-          spare_parts_category_id: idCategoria,
         }),
       });
 
@@ -120,12 +117,12 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
             const result = await response.json();
 
       console.log('Categoría guardada:', result);
-      if(result.error_message === 'The sub category already exists'){
+      if(result.error_message === 'The spare parts category already exists'){
         if (!isMobile) {
                   Swal.fire({
                     icon: 'error',
                     title: 'Existe',
-                    text: 'La sub categoría ya existe',
+                    text: 'La categoría ya existe',
                     toast: true,  
                     position: 'top-end',
                     showConfirmButton: false,
@@ -137,7 +134,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
         <AwesomeAlert
   show='true'
   title="Existe"
-  message='La sub categoría ya existe'
+  message='La categoría ya existe'
   closeOnTouchOutside={true}
   showCancelButton={false}
   showConfirmButton={true}
@@ -150,7 +147,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
                   Swal.fire({
                     icon: 'success',
                     title: 'Exito',
-                    text: 'Sub categoría guardada correctamente',
+                    text: 'Categoría guardada correctamente',
                     toast: true,  
                     position: 'top-end',
                     showConfirmButton: false,
@@ -162,7 +159,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
         <AwesomeAlert
   show='true'
   title="Exito"
-  message='Sub categoría guardada correctamente'
+  message='Categoría guardada correctamente'
   closeOnTouchOutside={true}
   showCancelButton={false}
   showConfirmButton={true}
@@ -172,7 +169,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 />}      onSave(); // Avisar al padre para refrescar o cerrar modal
       resetForm();
       }
-    console.log('Categoría guardada:', result);
+    
     } catch (error) {
       console.error('Error al guardar categoría:', error);
       Alert.alert('Error', 'No se pudo guardar la categoría');
@@ -190,7 +187,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
     <Modal visible={visible}animationType="slide" style={{ zIndex: 10 }} transparent={true}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Nueva Sub Categoría</Text>
+          <Text style={styles.modalTitle}>Nueva Categoría</Text>
 
           <TextInput
             style={styles.input}
@@ -232,7 +229,7 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
   );
 };
 
-export default AddSub_Category;
+export default AddSparePartsCategory;
 
 const styles = StyleSheet.create({
   modalOverlay: {

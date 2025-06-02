@@ -10,32 +10,25 @@ import {
   TextInput,
 } from 'react-native';
 import { API_BASE_URL } from '../url';
-import AddSubCategory from '../components/Add/addSub_category';
 import Swal from 'sweetalert2';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useNavigation } from '@react-navigation/native';
+import AddSpare_parts from '../components/Add/addSpare_parts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const SubCategory = ( { selectMenuItem }) => {
+const Spare_parts = () => {
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-
-  const handleVerRepuestos = async (sub_categorias) => {
-    await AsyncStorage.setItem('idsub_categorias', sub_categorias.id_sub_categorias.toString());
-    
-  selectMenuItem('spare_parts');
-};
-
+  
   const obtenerSubCategorias = async () => {
-      const idCategoria = await AsyncStorage.getItem('idCategoriaRepuestos');
-
+          const idSubCategoria = await AsyncStorage.getItem('idsub_categorias');
     try {
-      const response = await fetch(`${API_BASE_URL}/Sub_category/${idCategoria}`);
+      const response = await fetch(`${API_BASE_URL}/Spare_parts/${idSubCategoria}`);
       const data = await response.json();
       setCategorias(data);
     } catch (error) {
@@ -100,8 +93,9 @@ const SubCategory = ( { selectMenuItem }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.updateButton]}
-        onPress={() => handleVerRepuestos(item)}        >
-          <Text style={styles.buttonText}>Repuestos</Text>
+          onPress={() => handleUpdate(item.id_categoria)}
+        >
+          <Text style={styles.buttonText}>Informacion</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -156,7 +150,7 @@ const SubCategory = ( { selectMenuItem }) => {
 </View>
 
 
-      <AddSubCategory
+      <AddSpare_parts
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSave={obtenerSubCategorias}
@@ -287,4 +281,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SubCategory;
+export default Spare_parts;
