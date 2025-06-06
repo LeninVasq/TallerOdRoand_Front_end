@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import UpdateSub_category from '../components/Update/UpdateSub_category';
 
 
 const SubCategory = ( { selectMenuItem }) => {
@@ -23,7 +23,8 @@ const SubCategory = ( { selectMenuItem }) => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
   const handleVerRepuestos = async (sub_categorias) => {
     await AsyncStorage.setItem('idsub_categorias', sub_categorias.id_sub_categorias.toString());
@@ -50,9 +51,9 @@ const SubCategory = ( { selectMenuItem }) => {
     obtenerSubCategorias();
   }, []);
 
-  const handleUpdate = (id) => {
-    console.log('Actualizar ID:', id);
-    // Lógica para actualizar
+  const handleUpdate = (categoria) => {
+setCategoriaSeleccionada(categoria);
+    setModalVisibleUpdate(true);    // Lógica para actualizar
   };
 
   const handleAdd = () => {
@@ -94,7 +95,7 @@ const SubCategory = ( { selectMenuItem }) => {
       <View style={styles.actionsCell}>
         <TouchableOpacity
           style={[styles.button, styles.updateButton]}
-          onPress={() => handleUpdate(item.id_categoria)}
+          onPress={() => handleUpdate(item)}
         >
           <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
@@ -160,6 +161,13 @@ const SubCategory = ( { selectMenuItem }) => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSave={obtenerSubCategorias}
+      />
+      <UpdateSub_category 
+        visible={modalVisibleUpdate}
+        onClose={() => setModalVisibleUpdate(false)}
+        onSave={obtenerSubCategorias}
+        categoria={categoriaSeleccionada}
+
       />
     </View>
   );
