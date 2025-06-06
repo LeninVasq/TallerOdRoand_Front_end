@@ -15,6 +15,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { useNavigation } from '@react-navigation/native';
 import AddSpare_parts from '../components/Add/addSpare_parts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import UpdateSpare_parts from '../components/Update/UpdateSpare_parts';
 
 
 
@@ -23,7 +24,8 @@ const Spare_parts = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-
+ const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   
   const obtenerSubCategorias = async () => {
           const idSubCategoria = await AsyncStorage.getItem('idsub_categorias');
@@ -43,9 +45,9 @@ const Spare_parts = () => {
     obtenerSubCategorias();
   }, []);
 
-  const handleUpdate = (id) => {
-    console.log('Actualizar ID:', id);
-    // Lógica para actualizar
+  const handleUpdate = (categoria) => {
+   setCategoriaSeleccionada(categoria);
+    setModalVisibleUpdate(true);
   };
 
   const handleAdd = () => {
@@ -93,7 +95,7 @@ const Spare_parts = () => {
       <View style={styles.actionsCell}>
         <TouchableOpacity
           style={[styles.button, styles.updateButton]}
-          onPress={() => handleUpdate(item.id_categoria)}
+          onPress={() => handleUpdate(item)}
         >
           <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
@@ -163,6 +165,13 @@ const Spare_parts = () => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSave={obtenerSubCategorias}
+      />
+      <UpdateSpare_parts 
+        visible={modalVisibleUpdate}
+        onClose={() => setModalVisibleUpdate(false)}
+        onSave={obtenerSubCategorias}
+        categoria={categoriaSeleccionada}
+
       />
     </View>
   );

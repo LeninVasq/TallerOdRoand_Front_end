@@ -125,7 +125,7 @@ useEffect(() => {
 
     try {
 
-      const response = await fetch(`${API_BASE_URL}/Sub_category/${categoria.id_sub_categorias}`, {
+      const response = await fetch(`${API_BASE_URL}/Spare_parts/${categoria.id_repuestos}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body:  JSON.stringify({
