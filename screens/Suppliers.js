@@ -10,7 +10,8 @@ import {
   Dimensions
 } from 'react-native';
 import { API_BASE_URL } from '../url';
-
+import Addsuppliers from '../components/Add/addsuppliers';
+import Updatesuppliers from '../components/Update/Updatesuppliers';
 
 const Suppliers = ({ selectMenuItem }) => {
   const [proveedores, setProveedores] = useState([]);
@@ -77,12 +78,7 @@ const Suppliers = ({ selectMenuItem }) => {
       <Text style={styles.info}>ID Empresa: {item.id_empresa}</Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={isMobile ? styles.buttonPrimaryMovil : styles.buttonPrimary}
-          onPress={() => handleVerDetalles(item)}
-        >
-          <Text style={isMobile ? styles.buttonTextMovil : styles.buttonText}>Ver detalles</Text>
-        </TouchableOpacity>
+       
         <TouchableOpacity
           style={isMobile ? styles.buttonSecondaryMovil : styles.buttonSecondary}
           onPress={() => handleActualizar(item)}
@@ -116,6 +112,17 @@ const Suppliers = ({ selectMenuItem }) => {
         ListEmptyComponent={<Text style={styles.emptyText}>No hay proveedores disponibles.</Text>}
       />
 
+        <Addsuppliers
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSave={obtenerProveedores}
+      />
+      <Updatesuppliers
+        visible={modalVisibleUpdate}
+        onClose={() => setModalVisibleUpdate(false)}
+        proveedor={proveedorSeleccionado}
+        onSave={obtenerProveedores}
+      />
      
     </View>
   );

@@ -59,7 +59,6 @@ const Company = ({ selectMenuItem }) => {
 
   const handleActualizar = (empresa) => {
     setEmpresaSeleccionada(empresa);
-    console.log('Empresa seleccionada para actualizar:', empresa.id_empresa);
     setModalVisibleUpdate(true);
   };
 
