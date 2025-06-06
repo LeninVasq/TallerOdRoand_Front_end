@@ -18,6 +18,8 @@ import Spare_parts_category from './spare_parts_category'; // Asegúrate de que 
 import Dashboard from './Dashboard';
 import Sub_category from './sub_category';
 import Spare_parts from './spare_parts';
+import Company from './Company';
+import Suppliers from './Suppliers';
 const { width } = Dimensions.get('window');
 
 let SIDEBAR_WIDTH ; 
@@ -27,7 +29,7 @@ if (Platform.OS === 'android') {
   SIDEBAR_WIDTH = width * 0.3;
 }
 export default function Container() {
-  const [currentScreen, setCurrentScreen] = useState('spare_parts_category');
+  const [currentScreen, setCurrentScreen] = useState('company');
   const [sidebarVisible, setSidebarVisible] = useState(false);
 const slideAnim = useRef(new Animated.Value(Platform.OS === 'android' ? -200 : -SIDEBAR_WIDTH)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
@@ -117,7 +119,7 @@ const slideAnim = useRef(new Animated.Value(Platform.OS === 'android' ? -200 : -
     //defino los elementos del menú para luego mostrarlos 
     { id: 'dashboard', title: 'Dashboard', icon: 'speedometer-outline', badge: null },
     { id: 'spare_parts_category', title: 'Categorías de Repuestos', icon: 'car-outline', badge: null },
-    { id: 'categories', title: 'Categorías', icon: 'grid-outline', badge: null },
+    { id: 'company', title: 'Empresas', icon: 'grid-outline', badge: null },
     { id: 'orders', title: 'Pedidos', icon: 'receipt-outline', badge: '3' },
     { id: 'inventory', title: 'Inventario', icon: 'cube-outline', badge: null },
     { id: 'customers', title: 'Clientes', icon: 'people-outline', badge: null },
@@ -150,12 +152,13 @@ const slideAnim = useRef(new Animated.Value(Platform.OS === 'android' ? -200 : -
     toggleSidebar();
   };
 
+
   const renderContent = () => {
-    // Definición de pantallas y sus títulos/subtítulos
+    
     const screens = {
       dashboard: { title: 'Dashboard', subtitle: 'Resumen general del sistema' },
       spare_parts_category: { title: 'Categoria de Repuestos', subtitle: 'Gestión de categorias de repuestos automotrices' },
-      categories: { title: 'Categorías', subtitle: 'Organización por categorías' },
+      company: { title: 'Empresas', subtitle: 'Empresas agregadas' },
       orders: { title: 'Pedidos', subtitle: 'Gestión de órdenes de compra' },
       inventory: { title: 'Inventario', subtitle: 'Control de stock y almacén' },
       customers: { title: 'Clientes', subtitle: 'Base de datos de clientes' },
@@ -164,6 +167,7 @@ const slideAnim = useRef(new Animated.Value(Platform.OS === 'android' ? -200 : -
       spare_parts: { title: 'Repuestos', subtitle: 'Control de repuestos y stock' },
 
       settings: { title: 'Configuración', subtitle: 'Ajustes del sistema' },
+      suppliers: { title: 'Proveedores', subtitle: 'Proveedores' },
     };
 
     //para renderizar componentes específicos según la pantalla seleccionada
@@ -172,6 +176,8 @@ const slideAnim = useRef(new Animated.Value(Platform.OS === 'android' ? -200 : -
       dashboard: Dashboard,
       sub_category:  (props) => <Sub_category {...props} selectMenuItem={selectMenuItem} />,
       spare_parts: Spare_parts,
+      company: (props) => <Company {...props} selectMenuItem={selectMenuItem} />,
+      suppliers: Suppliers,
     };
 
     const current = screens[currentScreen];
