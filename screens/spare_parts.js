@@ -97,7 +97,12 @@ const Spare_parts = () => {
         >
           <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
-        
+        <TouchableOpacity
+          style={[styles.button, styles.updateButton]}
+          onPress={() => handleUpdate(item.id_categoria)}
+        >
+          <Text style={styles.buttonText}>Ingreso</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

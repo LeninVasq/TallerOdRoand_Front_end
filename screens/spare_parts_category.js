@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { API_BASE_URL } from '../url';
 import AddSparePartsCategory from '../components/Add/addspare_parts_category';
+import UpdateSparePartsCategory from '../components/Update/updatespare_parts_category';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -18,6 +19,8 @@ const Spare_parts_category = ( { selectMenuItem }) => {
   const [categorias, setCategorias] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
 const { width } = Dimensions.get('window');
 const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
@@ -43,7 +46,8 @@ const isMobile = Platform.OS === 'ios' || Platform.OS === 'android';
   );
 
   const handleActualizar = (categoria) => {
-    Alert.alert('Actualizar', `Actualizar categoría: ${categoria.nombre}`);
+    setCategoriaSeleccionada(categoria);
+    setModalVisibleUpdate(true);
   };
 
 const handleVerSubcategorias = async(categoria) => {
@@ -190,6 +194,13 @@ await AsyncStorage.setItem('idCategoriaRepuestos', categoria.id_categorias_repue
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSave={obtenerCategorias}
+      />
+      <UpdateSparePartsCategory 
+        visible={modalVisibleUpdate}
+        onClose={() => setModalVisibleUpdate(false)}
+        onSave={obtenerCategorias}
+        categoria={categoriaSeleccionada}
+
       />
     </View>
   );
